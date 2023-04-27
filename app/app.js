@@ -1,8 +1,10 @@
-const express = require("express")
+const express = require("express");
 const morgan = require("morgan");
 
 const app = express();
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms")
+);
 
 const Database = require("./database");
 const db = new Database();
@@ -11,6 +13,7 @@ app.get("/set", (req, res) => {
   Object.keys(req.query).forEach((key) => {
     db.set(key, req.query[key]);
   });
+
   res.status(201).send("OK");
 });
 
