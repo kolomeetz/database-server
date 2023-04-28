@@ -1,12 +1,23 @@
 class Database {
-  store = {};
+  memoryStore = {};
 
-  get(key) {
-    return this.store[key];
+  constructor(persistanceStore) {
+    this.persistanceStore = persistanceStore;
   }
 
   set(key, value) {
-    this.store[key] = value;
+    this.memoryStore[key] = value;
+    this.persistanceStore.set(key, value);
+  }
+
+  get(key) {
+    if (this.memoryStore[key]) {
+      return this.memoryStore[key];
+    } else {
+      const value = this.persistanceStore.get(key);
+      this.memoryStore[key] = value;
+      return this.memoryStore[key];
+    }
   }
 }
 
